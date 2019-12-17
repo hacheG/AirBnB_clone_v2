@@ -47,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
                 newDic = eval(str(line) + "()")
                 newDic.save()
                 print(newDic.id)
-            if token[0] in theClasses and len(token) > 1:
+            elif token[0] in theClasses and len(token) > 1:
                 newDic = eval(str(token[0]) + "()")
                 params = dict(arg.split('=') for arg in token[1:])
                 for key, val in params.items():
