@@ -16,6 +16,7 @@ theClasses = {'BaseModel': BaseModel, 'User': User,
               'Place': Place, 'State': State,
               'City': City, 'Amenity': Amenity, 'Review', Review}
 
+
 class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
@@ -42,21 +43,19 @@ class HBNBCommand(cmd.Cmd):
             NameError: when there is no object taht has the name
         """
         args = arg.split()
-	if len(args)  == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return False
         if args[0] in TheClasses:
             new_dict = self._key_value_parcer(argv[1:])
-	    instace = TheClasses[args[0]](**new_dict)
+            instace = TheClasses[args[0]](**new_dict)
         else:
             print("** class doesn't exist **")
-	    return False
+            return False
         print(instance.id)
         instance.save()
-	
-
-"""
-	try:
+    """
+        try:
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
@@ -67,18 +66,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
-"""
-
+    """
     def _key_value_parcer(self, args):
         """try a new function"""
-        new_dict ={}
-	for arg in args:
+        new_dict = {}
+        for arg in args:
             if "=" in args:
                 kvp = arg.split('=', 1)
                 key = kvp[0]
                 value = kvp[1]
                 if value[0] == value[-1] == '"':
-		    value = shlex.split(value)[0].replace('_', ' ')
+                    value = shlex.split(value)[0].replace('_', ' ')
                 else:
                     try:
                         value = int(value)
@@ -86,7 +84,6 @@ class HBNBCommand(cmd.Cmd):
                         continue
                 new_dict[key] = value
         return new_dict
-                    
 
     def do_show(self, line):
         """Prints the string representation of an instance
