@@ -26,7 +26,7 @@ class FileStorage:
         """
         my_objects = {}
         if cls is None:
-            return(FileStorage.__objects)
+            return(self.__objects)
         else:
             for key, value in self.__objects.items():
                 if type(value) is cls:
