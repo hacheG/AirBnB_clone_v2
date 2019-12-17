@@ -10,7 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from shlex import split
+import shlex
 
 theClasses = {'BaseModel': BaseModel, 'User': User,
               'Place': Place, 'State': State,
@@ -36,30 +36,27 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program at end of file"""
         return True
 
-    def do_create(self, args):
+    def do_create(self, line):
         """Creates a new instance of BaseModel, saves it
-	Exceptions:
-	SyntaxError: when there is no args given
-	NameError: when there is no object taht has the name
 	"""
-        if args is None or len(args) == 0:
+        if line is None or len(line) == 0:
             print("** class name missing **")
         else:
-            a = args.split()
-            if a[0] in theClasses and len(a) == 1:
-                new = eval(str(args) + "()")
-                new.save()
-                print(new.id)
-            elif a[0] in theClasses and len(a) > 1:
-                new = eval(str(a[0]) + "()")
-                params = dict(arg.split('=') for arg in a[1:])
-            for key, val in params.items():
-                if '_' in val:
-                    val = val.replace('_', ' ')
-                if hasattr(new, key):
-                    setattr(new, key, val)
-                new.save()
-                print(new.id)
+            token = shlex.split(line)
+            if token[0] in theClasses and len(token) == 1:
+                newDic = eval(str(line) + "()")
+                newDic.save()
+                print(newDic.id)
+            if token[0] in theClasses and len(token) > 1:
+                newDic = eval(str(token[0]) + "()")
+                params = dict(arg.split('=') for arg in token[1:])
+                for key, val in params.items():
+                    if '_' in val:
+                        val = val.replace('_', ' ')
+                    if hasattr(newDic, key):
+                        setattr(newDic, key, val)
+                newDic.save()
+                print(newDic.id)
             else:
                 print("** class doesn't exist **")
 
