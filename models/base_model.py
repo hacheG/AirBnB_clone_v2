@@ -3,12 +3,16 @@
 import uuid
 import models
 from datetime import datetime
-
+from sqlalchemy import Column, Integer, String, DateTime
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
+
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated = Column(DataTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
