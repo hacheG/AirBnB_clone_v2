@@ -70,3 +70,7 @@ class BaseModel:
 	    del mydict["_sa_instance_state"]
         
 	return my_dict
+
+    def delete(self):
+        """to delete the current instance"""
+        models.starage.delete(self)
