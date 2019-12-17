@@ -46,9 +46,9 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return False
-        if args[0] in TheClasses:
-            new_dict = self._key_value_parcer(argv[1:])
-            instace = TheClasses[args[0]](**new_dict)
+        if args[0] in theClasses:
+            new_dict = self._key_value_parcer(args[1:])
+            instance = theClasses[args[0]](**new_dict)
         else:
             print("** class doesn't exist **")
             return False
