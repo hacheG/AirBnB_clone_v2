@@ -36,54 +36,32 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program at end of file"""
         return True
 
-    def do_create(self, arg):
+    def do_create(self, args):
         """Creates a new instance of BaseModel, saves it
-        Exceptions:
-            SyntaxError: when there is no args given
-            NameError: when there is no object taht has the name
-        """
-        args = arg.split()
-        if len(args) == 0:
+	Exceptions:
+	SyntaxError: when there is no args given
+	NameError: when there is no object taht has the name
+	"""
+        if args is None or len(args) == 0:
             print("** class name missing **")
-            return False
-        if args[0] in theClasses:
-            new_dict = self._key_value_parcer(args[1:])
-            instance = theClasses[args[0]](**new_dict)
         else:
-            print("** class doesn't exist **")
-            return False
-        print(instance.id)
-        instance.save()
-    """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            obj.save()
-            print("{}".format(obj.id))
-        except SyntaxError:
-            print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
-    """
-    def _key_value_parcer(self, args):
-        """try a new function"""
-        new_dict = {}
-        for arg in args:
-            if "=" in args:
-                kvp = arg.split('=', 1)
-                key = kvp[0]
-                value = kvp[1]
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except:
-                        continue
-                new_dict[key] = value
-        return new_dict
+            a = args.split()
+            if a[0] in theClasses and len(a) == 1:
+                new = eval(str(args) + "()")
+                new.save()
+                print(new.id)
+            elif a[0] in theClasses and len(a) > 1:
+                new = eval(str(a[0]) + "()")
+                params = dict(arg.split('=') for arg in a[1:])
+            for key, val in params.items():
+                if '_' in val:
+                    val = val.replace('_', ' ')
+                if hasattr(new, key):
+                    setattr(new, key, val)
+                new.save()
+                print(new.id)
+            else:
+                print("** class doesn't exist **")
 
     def do_show(self, line):
         """Prints the string representation of an instance
