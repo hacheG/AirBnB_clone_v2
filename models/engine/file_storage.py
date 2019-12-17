@@ -66,4 +66,6 @@ class FileStorage:
         """
         Deletes an object from objects
         """
-        FileStorage.__objects.drop(obj)
+        for key, value in self.__self.objects.items():
+            if obj == value:
+                del self.objects[Key]
