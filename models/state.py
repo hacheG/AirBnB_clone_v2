@@ -6,7 +6,7 @@ from models.city import City
 import models
 from os import getenv
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import relationship, backref
 
 class State(BaseModel, Base):
     """This is the class for State
