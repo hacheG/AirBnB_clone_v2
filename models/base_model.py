@@ -15,7 +15,7 @@ class BaseModel:
 
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated = Column(DataTime, default=datetime.utcnow(), nullable=False)
+    updated = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -67,10 +67,10 @@ class BaseModel:
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
 
-	if mydict["_sa_instance_state"] is not None:
-	    del mydict["_sa_instance_state"]
+        if mydict["_sa_instance_state"] is not None:
+            del mydict["_sa_instance_state"]
         
-	return my_dict
+        return my_dict
 
     def delete(self):
         """to delete the current instance"""
