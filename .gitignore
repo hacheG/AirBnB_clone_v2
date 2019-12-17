@@ -1,3 +1,2 @@
 # ignore files
-.setup_mysql_dev.sql.swp
-.setup_mysql_test.sql.swp
+*.swp
