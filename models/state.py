@@ -13,7 +13,6 @@ class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name
-    """
     if getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = "states"
         name = Column(String(128), nullable=False)
@@ -29,5 +28,6 @@ class State(BaseModel, Base):
             if value.state_id == self.id:
                 x.append(value)
         return x
-
+    """
+    name = ""
 #  cities = relationship("City", cascade="all, delete-orphan", backref="state")

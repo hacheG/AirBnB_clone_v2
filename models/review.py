@@ -16,3 +16,6 @@ class Review(BaseModel):
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     text = Column(String(1024), nullable=False)
    """
+   place_id = ""
+   user_id = ""
+   text = ""

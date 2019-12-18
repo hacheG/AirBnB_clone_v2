@@ -12,7 +12,6 @@ class City(BaseModel, Base):
     Attributes:
         state_id: The state id
         name: input name
-    """
     if getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = "cities"
         state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
@@ -20,5 +19,5 @@ class City(BaseModel, Base):
     else:
         name = ""
         state_id = ""
-
-"""places = relationship("place", cascade="all,delete", backref="cities")"""
+    """
+#places = relationship("place", cascade="all,delete", backref="cities")
