@@ -3,7 +3,8 @@
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
@@ -65,7 +66,7 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-	
+
 	if mydict["_sa_instance_state"] is not None:
 	    del mydict["_sa_instance_state"]
         
