@@ -22,7 +22,7 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        """Cities"""
+        Cities
         x = []
         for value in models.storage.all(City).values():
             if value.state_id == self.id:
