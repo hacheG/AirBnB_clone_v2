@@ -6,11 +6,17 @@ from sqlalchemy.orm import relationship, backref
 import os
 
 place_amenity = Table("place_amenity", Base.metadata,
-                      Column("place_id", String(60), ForeignKey("places.id"), primary_key=True, nullable=False)
-                      Column("amenity_id", String(60), ForeignKey("amenities.id"), primary_key=True, nullable=False)
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True, nullable=False)
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True, nullable=False)
                       )
 
+
 class Place(BaseModel, Base):
+    """class place"""
     __tablename__ = 'places'
 
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -49,4 +55,3 @@ class Place(BaseModel, Base):
         if type(obj).__name__ == "Amenity":
             if obj.id not in self.amenity_ids:
                 self.amenity_ids.append(obj)
-
