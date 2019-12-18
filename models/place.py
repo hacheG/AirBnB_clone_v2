@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship, backref
+import os
+from models import storage
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -25,14 +27,32 @@ class Place(BaseModel, Base):
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
-    number_rooms = Column(Integer, nullable=False, default=0)
-    number_bathrooms = Column(Integer, nullable=False, default=0)
-    max_guest = Column(Integer, nullable=False, default=0)
-    price_by_night = Column(Integer, nullable=False, default=0)
+    number_rooms = Column(Integer, default=0, nullable=False)
+    number_bathrooms = Column(Integer, default=0, nullable=False)
+    max_guest = Column(Integer, default=0, nullable=False)
+    price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-# ================ esto se trbaja con el  HBNB_TYPE_STORAGE =====================
-    reviews = relationship("Review", backref="places")
-# ==============================================================================
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", cascade="all,delete", backref="place")
+        amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
+
+    @property
+    def reviews(self):
+        """getter that returns the list of review inst"""
+        reviewInstances = []
+	for key, value in storage.items():
+            if type(value).__name__ == "Review":
+                reviewInstances.append(value)
+        return (reviewInstances)
+	       
+
+
+
+
+
+
+
+
