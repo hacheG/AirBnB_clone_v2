@@ -6,6 +6,10 @@ from sqlalchemy.orm import relationship, backref
 import os
 from models import storage
 
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60), ForeignKey("places.id"), primary_key=True, nullable=False)
+                      Column("amenity_id", String(60), ForeignKey("amenities.id"), primary_key=True, nullable=False)
+                      )
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -48,3 +52,15 @@ class Place(BaseModel, Base):
             if type(value).__name__ == "Review":
                 reviewInstances.append(value)
         return (reviewInstances)
+
+    @property
+    def amenities(self):
+        """getter that returns the list of amenity"""
+        return self.amenity_ids
+
+    @amenities.setter
+    def amenities(self, obj):
+        if type(obj).__name__ == "Amenity":
+            if obj.id not in self.amenity_ids:
+                self.amenity_ids.append(obj)
+
