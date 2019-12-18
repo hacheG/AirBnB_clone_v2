@@ -20,19 +20,27 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    """
-    """if os.getenv("HBNB_TYPE_STORAGE") == "db":
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
     reviews = relationship("Review", cascade="all,delete", backref="place")
     amenities = relationship(
-                "Amenity", secondary="place_amenity", viewonly=False)"""
-
-    """
+                "Amenity", secondary="place_amenity", viewonly=False)
     @property
-    def reviews(self):"""
-    """getter that returns the list of review inst"""
-    """reviewInstances = []
+    def reviews(self):
+        getter that returns the list of review inst
+    reviewInstances = []
     for key, value in storage.items():
     if type(value).__name__ == "Review":
     reviewInstances.append(value)
     return (reviewInstances)
     """
+    city_id = ""
+    user_id = ""
+    name = ""
+    description = ""
+    number_rooms = 0
+    number_bathrooms = 0
+    max_guest = 0
+    price_by_night = 0
+    latitude = 0.0
+    longitude = 0.0
+    amenity_ids = []
