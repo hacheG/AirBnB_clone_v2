@@ -18,10 +18,9 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes"""
 
-    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-        id = Column(String(60), nullable=False, primary_key=True)
-        created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
-        updated = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+    updated = Column(DateTime(), default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -39,6 +38,12 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+            if "id" not in kwargs:
+                self.id = srt(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime_now()
+            if "updated_at" not in kwargs:
+                self.updated_at = datatime_now()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -48,12 +53,8 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-            return "[{}] ({}) {}".format(
-                type(self).__name__, self.id, self.to_dict())
-        else:
-            return "[{}] ({}) {}".format(
-                type(self).__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
@@ -76,7 +77,6 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-
         if "_sa_instance_state" in my_dict:
             del my_dict["_sa_instance_state"]
         return my_dict
