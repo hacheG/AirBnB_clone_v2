@@ -39,6 +39,7 @@ class FileStorage:
             obj: given object
         """
         if obj:
+            print(obj.__dict__)
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
 
@@ -67,6 +68,6 @@ class FileStorage:
         Deletes an object from objects
         """
         if obj:
-            key ="{}.{}".format(type(obj).__name__, obj.id)
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
             self.save()

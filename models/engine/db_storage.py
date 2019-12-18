@@ -32,8 +32,7 @@ class DBStorage:
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
-        Base.metadata.drop_all(self.__engine)
-
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
@@ -51,20 +50,19 @@ class DBStorage:
         else:
             for clase in clasesitas:
                 objre = self.__session.query(eval(clase)).all()
-                print("objre",objre)
+                print("objre", objre)
                 for obj in objre:
                     print("cada objeto cuando no hay clase", obj)
                     print("imprimirle llave", obj.id)
                     print("este es e nombre", obj.__dict__)
-                    #a["["+type(obj).__name__+"]"+"."+obj.id] = obj
-                    # key = "{}.{}".format(type(obj).__name__, obj.id)
+                    """a["["+type(obj).__name__+"]"+"."+obj.id] = obj
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    """
         return a
 
     def new(self, obj):
         """sets __object to given obj
-        Args:
-            obj: given object
-        """
+        Args: obj: given object """
         if obj:
             self.__session.add(obj)
 
@@ -78,7 +76,7 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmake(expire_on_commit=False),
-                                        bind=self.engine))()
+                                        bind=self.engine)()
 
     def delete(self, obj=None):
         """

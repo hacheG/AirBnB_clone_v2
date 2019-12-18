@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship, backref
 import os
 from models import storage
 
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -47,12 +48,3 @@ class Place(BaseModel, Base):
             if type(value).__name__ == "Review":
                 reviewInstances.append(value)
         return (reviewInstances)
-	       
-
-
-
-
-
-
-
-
