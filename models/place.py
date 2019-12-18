@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, ForeignKey, Float
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
 import os
+from models import storage
 
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
@@ -18,7 +19,6 @@ place_amenity = Table("place_amenity", Base.metadata,
 class Place(BaseModel, Base):
     """class place"""
     __tablename__ = 'places'
-
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
@@ -58,4 +58,4 @@ class Place(BaseModel, Base):
     def amenities(self, obj):
         if type(obj).__name__ == "Amenity":
             if obj.id not in self.amenity_ids:
-                self.amenity_ids.append(obj)
+                self.amenity_ids.append(obj.id)

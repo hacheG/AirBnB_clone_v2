@@ -3,8 +3,7 @@
 from models.base_model import BaseModel, Base
 from models.place import Place
 from sqlalchemy.orm import relationship, backref
-from os import getenv
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 
 
 class City(BaseModel, Base):

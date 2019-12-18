@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This is the state class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy.orm import relationship
 from models.city import City
 import models
 from os import getenv
@@ -16,7 +15,8 @@ class State(BaseModel, Base):
     """
     __table__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete", backref="state")
+    cities = relationship("City", cascade="all, delete, delete-orphan",
+                          backref="state")
 
     @property
     def cities(self):
@@ -25,5 +25,3 @@ class State(BaseModel, Base):
             if value.state_id == self.id:
                 x.append(value)
         return x
-
-#  cities = relationship("City", cascade="all, delete-orphan", backref="state")
