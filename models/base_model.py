@@ -14,11 +14,10 @@ else:
     Base = object
 
 
-
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
-  
+
 if os.environ.get("HBNB_TYPE_STORAGE") == "db":
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)

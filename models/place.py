@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship, backref
 
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -33,6 +34,5 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-# ================ esto se trbaja con el  HBNB_TYPE_STORAGE =====================
+# ================ esto se trbaja con el  HBNB_TYPE_STORAGE
     reviews = relationship("Review", backref="places")
-# ==============================================================================
