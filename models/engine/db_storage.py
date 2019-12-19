@@ -8,9 +8,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from os import getenv
 
 
 class DBStorage:
@@ -31,40 +28,28 @@ class DBStorage:
             getenv("HBNB_MYSQL_USER"), getenv('HBNB_MYSQL_PWD'),
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
-        if getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
         Returns a dictionary
         """
-        a = dict()
-        clasesitas = ['State', 'City', 'Place', 'Review', 'Amenity', 'User']
-        if cls is not None:
-            objre = self.__session.query(cls.__name__).all()
-            print("Esto esta botando el all del datastorage", objre)
-            for obj in objre:
-                print("en teoria esto es cada objeto", obj)
-                print("el id en teoria obj.id", obj.id)
-                a["["+cls.__name__+"]"+"."+obj.id] = obj
+        my_objects = {}
+        if cls is None:
+            for value in self.__my_list.values():
+                if self._session.quary(value).all():
+                    for x in self.__session.quary(x).all():
+                        new_dict[item.id] = item
         else:
-            for clase in clasesitas:
-                objre = self.__session.query(eval(clase)).all()
-                print("objre", objre)
-                for obj in objre:
-                    print("cada objeto cuando no hay clase", obj)
-                    print("imprimirle llave", obj.id)
-                    print("este es e nombre", obj.__dict__)
-                    """a["["+type(obj).__name__+"]"+"."+obj.id] = obj
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    """
-        return a
+            for x in self.__session.quary(self.__my_list[cls]):
+                my_objects[item.id] = item
+            return (my_objects)
 
     def new(self, obj):
         """sets __object to given obj
-        Args: obj: given object """
-        if obj:
-            self.__session.add(obj)
+        Args:
+            obj: given object
+        """
+        self.__session.add(obj)
 
     def save(self):
         """serialize the file path to JSON file path
