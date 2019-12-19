@@ -32,7 +32,7 @@ class DBStorage:
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
-        Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
 
     def all(self, cls=None):
@@ -78,7 +78,7 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmake(expire_on_commit=False),
-                                        bind=self.engine))()
+                                        bind=self.engine)()
 
     def delete(self, obj=None):
         """
