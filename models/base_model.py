@@ -83,4 +83,4 @@ if os.environ.get("HBNB_TYPE_STORAGE") == "db":
         """
     def delete(self):
         """to delete the current instance"""
-        models.starage.delete(self)
+        models.storage.delete(self)
