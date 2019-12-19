@@ -14,3 +14,4 @@ class Amenity(BaseModel, Base):
 
     name = Column(String(128), nullalble=False))
     place_amenities = relationship("Place", backref="amenities")
+
