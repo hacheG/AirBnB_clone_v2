@@ -5,19 +5,25 @@ import models
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
-Base = declarative_base()
+
+if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+    Base = declarative_base()
+else:
+    Base = object
+
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
-    """
-
+  
+if os.environ.get("HBNB_TYPE_STORAGE") == "db":
     id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime(), default=datetime.now(), nullable=False)
-    updated = Column(DateTime(), default=datetime.now(), nullable=False)
-
+    created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+    updated = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+"""
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
@@ -43,8 +49,12 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+        if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+            return "[{}] ({}) {}".format(
+                type(self).__name__, self.id, self.to_dict())
+        else:
+            return "[{}] ({}) {}".format(
+                type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
@@ -68,10 +78,10 @@ class BaseModel:
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
 
-        if mydict["_sa_instance_state"] is not None:
+        """        if mydict["_sa_instance_state"] is not None:
             del mydict["_sa_instance_state"]
         return my_dict
-
+        """
     def delete(self):
         """to delete the current instance"""
         models.starage.delete(self)

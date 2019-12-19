@@ -8,6 +8,7 @@ class Amenity(BaseModel, Base):
     Attributes:
         name: input name
     """
-    __tablename__ = 'amenities'
+    #    __tablename__ = 'amenities'
 
-    name = Column(String(128), nullalble=False))
+    #   name = Column(String(128), nullalble=False)
+    name = ""
