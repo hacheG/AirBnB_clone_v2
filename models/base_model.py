@@ -8,14 +8,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
 
     id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime(), default=datetime.now(), nullable=False)
+    updated = Column(DateTime(), default=datetime.now(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -69,7 +70,6 @@ class BaseModel:
 
         if mydict["_sa_instance_state"] is not None:
             del mydict["_sa_instance_state"]
-        
         return my_dict
 
     def delete(self):
