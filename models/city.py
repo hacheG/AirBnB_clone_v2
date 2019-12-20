@@ -13,8 +13,12 @@ class City(BaseModel, Base):
         state_id: The state id
         name: input name
     """
-    __tablename__ = "cities"
-    state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-    name = Column(String(128), nullable=False)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = "cities"
+        state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+        name = Column(String(128), nullable=False)
+    else:
+        name = ""
+        state_id = ""
 
 """places = relationship("place", cascade="all,delete", backref="cities")"""
