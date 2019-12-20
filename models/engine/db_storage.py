@@ -8,11 +8,9 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from sqlalchemy.ext.declarative import declarative_base
-
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -39,16 +37,14 @@ class DBStorage:
         """
         Returns a dictionary
         """
-        my_objects = []
+        my_objects = dict()
         objects = ["State", "City", "User", "Place", "Review", "Amenity"]
 
-        if cls:
-            my_objects = self.__session.query(cls)
-        else:
-            for cls in objects:
-                my_objects = my_objects + self.__session.query(cls)
-        return {type(value).__name__ + "." + value.id: value
-                for value in my_objects}
+        for objts in objects:
+            for obj in self.__session.query(eval(objts)).all():
+                my_objects[type(obj).__name__+"."+obj.id] = obj
+
+        return(my_objects)
 
     def new(self, obj):
         """sets __object to given obj
@@ -66,9 +62,8 @@ class DBStorage:
         """serialize the file path to JSON file path
         """
         Base.metadata.create_all(self.__engine)
-        newSession = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(newSession)
-        self.session = Session()
+        self.__session = scoped_session(sessionmaker(expire_on_commit=False,
+                                        bind=self.__engine))()
 
     def delete(self, obj=None):
         """
