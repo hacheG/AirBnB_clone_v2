@@ -16,13 +16,13 @@ else:
 
 class BaseModel:
     """This class will defines all common attributes/methods
-    for other classes
+    for other classes"""
 
-if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
-    updated = Column(DateTime(), default=datetime.utcnow(), nullable=False)
-"""
+    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+        updated = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:

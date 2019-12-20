@@ -14,9 +14,9 @@ class State(BaseModel, Base):
     Attributes:
         name: input name
     """
-    __table__ = "states"
+    __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete", backref="state")
+    cities = relationship("City", cascade="all, delete", backref="states")
 
     @property
     def cities(self):
