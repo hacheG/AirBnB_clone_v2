@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 """This is the file storage class for AirBnB"""
 import json
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from os import getenv
 
 class DBStorage:
     """This class serializes instances to a JSON file and
@@ -28,21 +30,21 @@ class DBStorage:
             getenv("HBNB_MYSQL_USER"), getenv('HBNB_MYSQL_PWD'),
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
+        if getenv("HBNB_MYSQL_ENV") == "test":
+            Base.metadata.drop_all()
 
     def all(self, cls=None):
         """
         Returns a dictionary
         """
-        my_objects = {}
-        if cls is None:
-            for value in self.__my_list.values():
-                if self._session.quary(value).all():
-                    for x in self.__session.quary(x).all():
-                        new_dict[item.id] = item
-        else:
-            for x in self.__session.quary(self.__my_list[cls]):
-                my_objects[item.id] = item
-            return (my_objects)
+        my_objects = dict()
+        objects = ["State", "City", "User", "Place", "Review", "Amenity"]
+
+        for objts in objects:
+            for obj in self.__session.query(eval(objts)).all():
+                my_objects[type(obj).__name__+"."+obj.id] = obj
+
+        return(my_objects)
 
     def new(self, obj):
         """sets __object to given obj
@@ -60,8 +62,8 @@ class DBStorage:
         """serialize the file path to JSON file path
         """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmake(expire_on_commit=False),
-                                        bind=self.engine)()
+        self.__session = scoped_session(sessionmaker(expire_on_commit=False,
+                                        bind=self.__engine))()
 
     def delete(self, obj=None):
         """
@@ -69,9 +71,3 @@ class DBStorage:
         """
         if obj:
             self.__session.delete(obj)
-
-    def close(self):
-        """
-        Close the session
-        """
-        self.__session.close()
