@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
 import os
 
+
 class Place(BaseModel):
     """__tablename__ = 'places'
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
