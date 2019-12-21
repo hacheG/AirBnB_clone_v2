@@ -16,7 +16,8 @@ class State(BaseModel, Base):
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete", backref="states")
+    cities = relationship("City", cascade="all, delete, delete-orphan",
+                          backref="states")
 
     @property
     def cities(self):
@@ -25,5 +26,3 @@ class State(BaseModel, Base):
             if value.state_id == self.id:
                 x.append(value)
         return x
-
-#  cities = relationship("City", cascade="all, delete-orphan", backref="state")
