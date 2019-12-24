@@ -39,36 +39,33 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Create from basemodel
         """
-        if len(line) == 0:
-            print("** class name missing **")
-            return
-
-        data = line.split(" ")
-        if data[0] in theClasses:
-            if len(data) > 1:
-                obj = eval("{}()".format(data[0]))
-                for parametr in (data[1:]):
-                    sinElIgual = parametr.split('=')
-                    afterElIgual = sinElIgual[-1]
-
-                    if isinstance(afterElIgual, str):
-                        if '"' in afterElIgual:
-                            sinComillas = afterElIgual.replace('"', '')
-                            value = sinComillas
-                        if '_' in sinComillas:
-                            sinLinea = sinComillas.replace('_', ' ')
-                            value = sinLinea
-                    elif isinstance(afterElIgual, int):
-                        value = afterElIgual
-                    elif isinstance(afterElIgual, float):
-                        value = afterElIgual
-
-                    if hasattr(obj, afterElIgual[0]):
-                        setattr(obj, afterElIgual[0], value)
-                obj.save()
-                print("{}".format(obj.id))
+        if line in None or len(line) == 0:
+            print("** classname missing **")
         else:
-            print("** class doesn't exist **")
+            token = line.split()
+
+            if token[1] in theClasses:
+                if len(token) == 1:
+                    obj = eval("{}()".format(token[0]))
+                    obj.save()
+                    print("{}".format(obj.id))
+                elif token[0] in theClasses:
+                    if len(token) > 1:
+                        obj = eval("{}()".format(token[0]))
+                        for argum in (token[1:]):
+                            paramtr = dict(argum.split("="))
+                        for key, value in paramtr.items():
+                            if '"' in value:
+                                value = value.replace('"', '')
+                            if '_' in value:
+                                value = value.replace('_'. ' ')
+                            if hasattr(obj, key):
+                                setattr(obj, key, val)
+                        obj.save()
+                        print("{}".format(obj.id))
+                else:
+                    print("** class doesn't exist **")
+
 
     def do_show(self, line):
         """Prints the string representation of an instance
