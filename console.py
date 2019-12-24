@@ -45,27 +45,28 @@ class HBNBCommand(cmd.Cmd):
 
         data = line.split(" ")
         if data[0] in theClasses:
-            obj = eval("{}()".format(data[0]))
             if len(data) > 1:
-                sinElIgual = data[1].split('=')
-                afterElIgual = sinElIgual[-1]
+                obj = eval("{}()".format(data[0]))
+                for parametr in (data[1:]):
+                    sinElIgual = parametr.split('=')
+                    afterElIgual = sinElIgual[-1]
 
-                if isinstance(afterElIgual, str):
-                    if '"' in afterElIgual:
-                        sinComillas = afterElIgual.replace('"', '')
-                        value = sinComillas
-                    if '_' in sinComillas:
-                        sinLinea = sinComillas.replace('_', ' ')
-                        value = sinLinea
-                elif isinstance(afterElIgual, int):
-                    value = afterElIgual
-                elif isinstance(afterElIgual, float):
-                    value = afterElIgual
+                    if isinstance(afterElIgual, str):
+                        if '"' in afterElIgual:
+                            sinComillas = afterElIgual.replace('"', '')
+                            value = sinComillas
+                        if '_' in sinComillas:
+                            sinLinea = sinComillas.replace('_', ' ')
+                            value = sinLinea
+                    elif isinstance(afterElIgual, int):
+                        value = afterElIgual
+                    elif isinstance(afterElIgual, float):
+                        value = afterElIgual
 
-                if hasattr(obj, afterElIgual[0]):
-                    setattr(obj, afterElIgual[0], value)
-            obj.save()
-            print("{}".format(obj.id))
+                    if hasattr(obj, afterElIgual[0]):
+                        setattr(obj, afterElIgual[0], value)
+                obj.save()
+                print("{}".format(obj.id))
         else:
             print("** class doesn't exist **")
 
