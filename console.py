@@ -62,8 +62,8 @@ class HBNBCommand(cmd.Cmd):
                 elif isinstance(afterElIgual, float):
                     value = afterElIgual
 
-                if hasattr(obj, sinElIgual[0]):
-                    setattr(obj, sinElIgual[0], value)
+                if hasattr(obj, afterElIgual[0]):
+                    setattr(obj, afterElIgual[0], value)
             obj.save()
             print("{}".format(obj.id))
         else:
