@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
 # naaaaa paila
 
+from fabric.api import *
 import tarfile
 import os
 from datetime import datetime
@@ -19,6 +19,3 @@ def do_pack():
         return savedir + filename
     else:
         return None
-=======
-#asdfasdfa
->>>>>>> f01adaaadf3c63f1e63521dbdd6bb881109c4e0b
