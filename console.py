@@ -39,26 +39,35 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Create from basemodel
         """
-        if line is None or len(line) == 0:
+        if len(line) == 0:
             print("** class name missing **")
+            return
+
+        data = line.split(" ")
+        if data[0] in theClasses:
+            obj = eval("{}()".format(data[0]))
+            if len(data) > 1:
+                sinElIgual = data[1].split('=')
+                afterElIgual = sinElIgual[-1]
+
+                if isinstance(afterElIgual, str):
+                    if '"' in afterElIgual:
+                        sinComillas = afterElIgual.replace('"', '')
+                        value = sinComillas
+                    if '_' in sinComillas:
+                        sinLinea = sinComillas.replace('_', ' ')
+                        value = sinLinea
+                elif isinstance(afterElIgual, int):
+                    value = afterElIgual
+                elif isinstance(afterElIgual, float):
+                    value = afterElIgual
+
+                if hasattr(obj, sinElIgual[0]):
+                    setattr(obj, sinElIgual[0], value)
+            obj.save()
+            print("{}".format(obj.id))
         else:
-            token = shlex.split(line)
-            if token[0] in theClasses and len(token) == 1:
-                newDic = eval(str(line) + "()")
-                newDic.save()
-                print(newDic.id)
-            elif token[0] in theClasses and len(token) > 1:
-                newDic = eval(str(token[0]) + "()")
-                params = dict(arg.split('=') for arg in token[1:])
-                for key, val in params.items():
-                    if '_' in val:
-                        val = val.replace('_', ' ')
-                    if hasattr(newDic, key):
-                        setattr(newDic, key, val)
-                newDic.save()
-                print(newDic.id)
-            else:
-                print("** class doesn't exist **")
+            print("** class doesn't exist **")
 
     def do_show(self, line):
         """Prints the string representation of an instance
