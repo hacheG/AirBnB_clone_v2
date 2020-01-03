@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 
+
 class DBStorage:
     """This class serializes instances to a JSON file and
     deserializes JSON file to instances
@@ -31,7 +32,7 @@ class DBStorage:
             getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
         if getenv("HBNB_MYSQL_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all()
 
     def all(self, cls=None):
         """
