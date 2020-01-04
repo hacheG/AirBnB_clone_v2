@@ -9,26 +9,26 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """ Deploy the file in specific folders in the servers """
-    if path.isfile(archive_path) is False:
+    """ Deploys archive to servers"""
+    if not os.path.exists(archive_path):
         return False
-    # With .tgz
-    filetgz = archive_path.split("/")[-1]
-    # No .tgz
-    filename = filetgz.replace('.tgz', '')
 
-    newdir = "/data/web_static/releases/" + filename
+    results = []
 
-    try:
-        put(archive_path, "/tmp/")
-        run("sudo mkdir {}/".format(newdir))
-        run("sudo tar -xzf /tmp/{} -C {}/".format(filetgz, newdir))
-        run("sudo rm /tmp/{}".format(filetgz))
-        run("sudo mv {}/web_static/* {}/".format(newdir, newdir))
-        run("sudo rm -rf {}/web_static".format(newdir))
-        run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(newdir))
-        print("New version deployed!")
-        return True
-    except:
-        return False
+    res = put(archive_path, "/tmp")
+    results.append(res.succeeded)
+
+    basename = os.path.basename(archive_path)
+    if basename[-4:] == ".tgz":
+        name = basename[:-4]
+    newdir = "/data/web_static/releases/" + name
+    run("mkdir -p " + newdir)
+    run("tar -xzf /tmp/" + basename + " -C " + newdir)
+
+    run("rm /tmp/" + basename)
+    run("mv " + newdir + "/web_static/* " + newdir)
+    run("rm -rf " + newdir + "/web_static")
+    run("rm -rf /data/web_static/current")
+    run("ln -s " + newdir + " /data/web_static/current")
+
+    return True
