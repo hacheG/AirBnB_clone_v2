@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# i hate you holbi
+""" i hate you holbi """
 
 from fabric.api import *
 import os
