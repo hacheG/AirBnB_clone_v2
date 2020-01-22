@@ -25,6 +25,7 @@ def fun3(text):
     """a program with flask"""
     return "C %s" % text.replace("_", " ")
 
+
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def fun4(text="is cool"):
