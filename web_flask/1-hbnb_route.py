@@ -12,6 +12,7 @@ def fun():
     """a program with flask"""
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb', strict_slashes=False)
 def fun2():
     """a program with flask"""
