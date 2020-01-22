@@ -20,10 +20,10 @@ def fun2():
     return 'HBNB'
 
 
-@app.route('/c/<word>', strict_slashes=False)
-def fun3(word):
+@app.route('/c/<text>', strict_slashes=False)
+def fun3(text):
     """a program with flask"""
-    return "C %s" % word.replace("_", " ")
+    return "C %s" % text.replace("_", " ")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
