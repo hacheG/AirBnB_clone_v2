@@ -72,3 +72,7 @@ class DBStorage:
         """
         if obj:
             self.__session.delete(obj)
+    
+    def close(self):
+        """more methods"""
+        self.__session.close()
