@@ -37,36 +37,42 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, line):
-        """Create from basemodel
+        """Creates a new instance of BaseModel, saves it
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
         """
-        if len(line) == 0:
-            print("** class name missing **")
-            return
+        try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
+            # print(eval(my_list[0]+"()").__dict__, " Esto fue la ")
+            obj = eval("{}()".format(my_list[0]))
+            if len(my_list) > 1:
+                a = 1
+                while a < len(my_list):
+                    arg = my_list[a]
+                    arg = arg.split("=")
+                    value = arg[1]
+                    try:
+                        if arg[1][0] == '"' and arg[1][-1] == '"':
+                            value = arg[1].replace("_", " ").replace('"', "")
+                        else:
+                            try:
+                                value = int(value)
+                            except:
+                                value = float(value)
+                    except:
+                        arg[0] = "PRUEBA"
 
-        data = line.split(" ")
-        if data[0] in theClasses:
-            obj = eval("{}()".format(data[0]))
-            if len(data) > 1:
-                sinElIgual = data[1].split('=')
-                afterElIgual = sinElIgual[-1]
-
-                if isinstance(afterElIgual, str):
-                    if '"' in afterElIgual:
-                        sinComillas = afterElIgual.replace('"', '')
-                        value = sinComillas
-                    if '_' in sinComillas:
-                        sinLinea = sinComillas.replace('_', ' ')
-                        value = sinLinea
-                elif isinstance(afterElIgual, int):
-                    value = afterElIgual
-                elif isinstance(afterElIgual, float):
-                    value = afterElIgual
-
-                if hasattr(obj, sinElIgual[0]):
-                    setattr(obj, sinElIgual[0], value)
+                    if hasattr(obj, arg[0]):
+                        setattr(obj, arg[0], value)
+                    a = a + 1
             obj.save()
             print("{}".format(obj.id))
-        else:
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
             print("** class doesn't exist **")
 
     def do_show(self, line):
