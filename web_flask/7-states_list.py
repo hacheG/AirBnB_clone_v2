@@ -18,7 +18,7 @@ def fun8():
 def fun9():
     """a program with flask"""
     states = storage.all(State).values()
-    return render_template('7-states_list.html' states=states)
+    return render_template('7-states_list.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
