@@ -3,24 +3,20 @@
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, DateTime, String, Integer, Table, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-import os
 
-
-if os.environ.get("HBNB_TYPE_STORAGE") == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
-    for other classes"""
+    for other classes
+    """
 
     id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -38,12 +34,14 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+            # TODO: wtf? more error checking?
             if "id" not in kwargs:
-                self.id = srt(uuid.uuid4())
+                self.id = str(uuid.uuid4())
             if "created_at" not in kwargs:
-                self.created_at = datetime_now()
+                self.created_at = datetime.now()
             if "updated_at" not in kwargs:
-                self.updated_at = datatime_now()
+                self.updated_at = datetime.now()
+
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -82,5 +80,5 @@ class BaseModel:
         return my_dict
 
     def delete(self):
-        """to delete the current instance"""
+        """deletes current instance from the storage (models.storage)"""
         models.storage.delete(self)
